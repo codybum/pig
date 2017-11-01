@@ -11,8 +11,8 @@ public class PersonRecord {
       public String wikiImage;
       public String birth;
       public String death;
-
-
+      public List<String[]> degreeLists;
+      public boolean isProcessed = false;
 
     public PersonRecord(int id, String name)
     {
@@ -20,6 +20,7 @@ public class PersonRecord {
 	    this.name = name;
 	    students = new ArrayList<Integer>();
 	    advisors = new ArrayList<Integer>();
+	    degreeLists = new ArrayList<String[]>();
     }
 
 }
