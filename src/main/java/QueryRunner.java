@@ -1,7 +1,12 @@
+import org.apache.commons.io.FileUtils;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.PrintWriter;
 
 public class QueryRunner implements Runnable {
 
@@ -13,6 +18,32 @@ public class QueryRunner implements Runnable {
         this.id = id;
 	}
 
+
+    public Document getDocument(int id) throws Exception {
+        Document doc = null;
+        try {
+            String url = BaseURL + String.valueOf(id);
+            String fileName = "data/" + String.valueOf(id) + ".html";
+
+            File f = new File(fileName);
+            if (!f.exists()) {
+                doc = Jsoup.connect(url).get();
+                FileUtils.writeStringToFile(f, doc.outerHtml(), "UTF-8");
+            } else {
+                System.out.println("**CACHED ID: " + id + " **");
+                //doc = Jsoup.connect(f.toURL().toString()).get();
+                doc = Jsoup.parse(f,"UTF-8");
+            }
+
+        } catch(Exception ex) {
+            System.out.println("getDocument Error : " + ex.toString());
+            ex.printStackTrace();
+            System.exit(0);
+        }
+
+        return doc;
+
+    }
 
 	public void run() {
 
@@ -31,10 +62,11 @@ public class QueryRunner implements Runnable {
             if (!isProcessed) {
                 boom.jobsize++;
 
-                String url = BaseURL + String.valueOf(id);
+           //     String url = BaseURL + String.valueOf(id);
 
-            Document doc = Jsoup.connect(url).get();
+           // Document doc = Jsoup.connect(url).get();
 
+                Document doc = getDocument(id);
 
             String name = null;
 
@@ -45,7 +77,7 @@ public class QueryRunner implements Runnable {
             }
 
             if (name == null) {
-                System.out.println("Name = null " + url);
+                System.out.println("Name = null ");
                 System.exit(0);
             }
 
@@ -236,7 +268,7 @@ public class QueryRunner implements Runnable {
                                 System.out.println("Advisor: " + boom.pm.get(aId).name + " added Student:" + boom.pm.get(id).name);
                             }
                             try {
-                                Thread.sleep((long) (Math.random() * 1000));
+                                //Thread.sleep((long) (Math.random() * 500));
                             } catch (Exception ex) {
 
                             }
