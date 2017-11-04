@@ -108,14 +108,12 @@ public class QueryRunner implements Runnable {
 
                                     if (!boom.pm.containsKey(id)) {
                                         PersonRecord pr = new PersonRecord(id, name);
-                                        pr.degreeLists.add(degreeArray);
+                                        pr.addDegree(degreeArray);
                                         boom.pm.put(id, pr);
                                         System.out.println("New student added " + id);
                                         //System.out.println(pr.name);
                                     } else {
-                                        if(!boom.pm.get(id).degreeLists.contains(degreeArray)) {
-                                            boom.pm.get(id).degreeLists.add(degreeArray);
-                                        }
+                                            boom.pm.get(id).addDegree(degreeArray);
                                     }
                                 }
                                 System.out.println("Degree: " + degreeArray[0] + " School: " + degreeArray[1]);

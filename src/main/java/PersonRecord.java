@@ -11,7 +11,7 @@ public class PersonRecord {
       public String wikiImage;
       public String birth;
       public String death;
-      public List<String[]> degreeLists;
+      private List<String[]> degreeLists;
       public boolean isProcessed = false;
 
     public PersonRecord(int id, String name)
@@ -21,6 +21,20 @@ public class PersonRecord {
 	    students = new ArrayList<Integer>();
 	    advisors = new ArrayList<Integer>();
 	    degreeLists = new ArrayList<String[]>();
+    }
+
+    public void addDegree(String[] degree) {
+
+        synchronized(degreeLists) {
+            if(!degreeLists.contains(degree)) {
+                degreeLists.add(degree);
+            }
+        }
+
+    }
+
+    public List<String[]> getDegreeLists() {
+        return degreeLists;
     }
 
 }
